@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "Question": {
+      "title": "Question",
+      "description": "An English learning quiz question (word, phrase, or sentence grammar)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier of the question" },
+        "category": { "type": "string", "description": "Type of quiz: word, phrase, sentence" },
+        "word": { "type": "string" },
+        "phonetic": { "type": "string" },
+        "partOfSpeech": { "type": "string" },
+        "options": { "type": "array" },
+        "answerIndex": { "type": "number" },
+        "keyPoint": { "type": "string" },
+        "type": { "type": "string" },
+        "chinese": { "type": "string" },
+        "englishTemplate": { "type": "string" },
+        "choices": { "type": "array" },
+        "answer": { "type": "string" }
+      },
+      "required": ["id", "category"]
+    },
+    "UserMistake": {
+      "title": "UserMistake",
+      "description": "Records of questions answered incorrectly by a student for review in their Wrong Book",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "quizType": { "type": "string" },
+        "questionId": { "type": "string" },
+        "question": { "type": "object" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["username", "quizType", "questionId", "question"]
+    }
+  },
+  "firestore": {
+    "/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Collection of all Unit 1 questions"
+    },
+    "/user_mistakes/{mistakeId}": {
+      "schema": "UserMistake",
+      "description": "Saves mistake logs per student username for personalized reviews"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Questions collection - public read and write (since seed runs on client-side)
+    match /questions/{questionId} {
+      allow read, write: if true;
+    }
+
+    // User Mistakes collection - public read and write (allows unauthenticated students to practice/review)
+    match /user_mistakes/{mistakeId} {
+      allow read, write: if true;
+    }
+  }
+}

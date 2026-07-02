@@ -1,0 +1,6 @@
+{
+  "name": "初中英语单词和句子测试及讲解",
+  "description": "一个清爽现代的单页应用，包含初中英语单词与句子语法测试、每日打卡、排行榜，以及由 Gemini 驱动的幽默AI记忆讲解。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

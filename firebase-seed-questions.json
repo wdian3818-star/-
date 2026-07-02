@@ -1,0 +1,137 @@
+[
+  {
+    "word": "e-payment",
+    "phonetic": "/iː ˈpeɪmənt/",
+    "meaning": "n. 电子支付",
+    "phrases": "online e-payment 在线电子支付；use e-payment 使用电子支付",
+    "example_sentence": "We can use e-payment to buy things easily.",
+    "example_translation": "我们可以用电子支付轻松购物。",
+    "usage_notes": ""
+  },
+  {
+    "word": "bring about",
+    "phonetic": "/brɪŋ əˈbaʊt/",
+    "meaning": "带来；引起",
+    "phrases": "bring about changes 带来变化",
+    "example_sentence": "The new policy brought about great changes in our life.",
+    "example_translation": "新政策给我们的生活带来了巨大变化。",
+    "usage_notes": "及物动词短语，后接名词/代词，主语多为事物。"
+  },
+  {
+    "word": "rough",
+    "phonetic": "/rʌf/",
+    "meaning": "adj. 崎岖的；粗糙的",
+    "phrases": "rough road 崎岖的道路；rough skin 粗糙的皮肤",
+    "example_sentence": "We walked along a rough path in the mountains.",
+    "example_translation": "我们沿着山里崎岖的小路行走。",
+    "usage_notes": "形容词，修饰名词，可作表语/定语。"
+  },
+  {
+    "word": "audio",
+    "phonetic": "/ˈɔːdiəʊ/",
+    "meaning": "adj. 声音的；音频的",
+    "phrases": "audio book 有声书；audio equipment 音频设备",
+    "example_sentence": "We can listen to audio books on the phone.",
+    "example_translation": "我们可以在手机上听有声书。",
+    "usage_notes": "形容词，修饰与声音相关的事物。"
+  },
+  {
+    "word": "junior",
+    "phonetic": "/ˈdʒuːniə(r)/",
+    "meaning": "adj. 低年级的；初级的",
+    "phrases": "junior high school 初中",
+    "example_sentence": "He is a junior student in Grade 7.",
+    "example_translation": "他是七年级的低年级学生。",
+    "usage_notes": "形容词，可修饰学生、年级、学校等。"
+  },
+  {
+    "word": "flat",
+    "phonetic": "/flæt/",
+    "meaning": "n. 公寓",
+    "phrases": "live in a flat 住在公寓里",
+    "example_sentence": "They have a new flat in the city.",
+    "example_translation": "他们在城里有一套新公寓。",
+    "usage_notes": "可数名词（英式），美式常用 apartment。"
+  },
+  {
+    "word": "aspect",
+    "phonetic": "/ˈæspekt/",
+    "meaning": "n. 方面",
+    "phrases": "every aspect 各个方面",
+    "example_sentence": "We should consider every aspect of the problem.",
+    "example_translation": "我们应该考虑问题的各个方面。",
+    "usage_notes": "可数名词，常用搭配：in all aspects 在各方面。"
+  },
+  {
+    "word": "Mombasa",
+    "phonetic": "/mɒmˈbɑːsə/",
+    "meaning": "n. 蒙巴萨（肯尼亚城市）",
+    "phrases": "",
+    "example_sentence": "Mombasa is a beautiful port city in Kenya.",
+    "example_translation": "蒙巴萨是肯尼亚一座美丽的港口城市。",
+    "usage_notes": "专有名词，首字母必须大写。"
+  },
+  {
+    "word": "discussion",
+    "phonetic": "/dɪˈskʌʃn/",
+    "meaning": "n. 讨论",
+    "phrases": "have a discussion 进行讨论",
+    "example_sentence": "We had a discussion about the environment.",
+    "example_translation": "我们进行了一场关于环境的讨论。",
+    "usage_notes": "不可数/可数名词，固定搭配：have a discussion about sth."
+  },
+  {
+    "word": "miracle",
+    "phonetic": "/ˈmɪrəkl/",
+    "meaning": "n. 奇迹",
+    "phrases": "a medical miracle 医学奇迹",
+    "example_sentence": "The project is a great miracle.",
+    "example_translation": "这个项目是一个伟大的奇迹。",
+    "usage_notes": "可数名词。"
+  },
+  {
+    "word": "dirt",
+    "phonetic": "/dɜːt/",
+    "meaning": "n. 泥土；污物",
+    "phrases": "wash off dirt 洗掉污垢",
+    "example_sentence": "There is some dirt on his clothes.",
+    "example_translation": "他的衣服上有一些泥土。",
+    "usage_notes": "不可数名词。"
+  },
+  {
+    "word": "track",
+    "phonetic": "/træk/",
+    "meaning": "n. 小路；轨道",
+    "phrases": "mountain track 山间小路；railway track 铁轨",
+    "example_sentence": "They walked along a narrow track in the forest.",
+    "example_translation": "他们沿着森林里的窄路行走。",
+    "usage_notes": "可数名词。"
+  },
+  {
+    "word": "link",
+    "phonetic": "/lɪŋk/",
+    "meaning": "v. 连接；联系",
+    "phrases": "link A to B 把A和B连接起来",
+    "example_sentence": "The bridge links the village to the city.",
+    "example_translation": "这座桥把村庄和城市连接起来。",
+    "usage_notes": "及物动词，固定搭配：link...to...。"
+  },
+  {
+    "word": "wide",
+    "phonetic": "/waɪd/",
+    "meaning": "adj. 宽的；广泛的",
+    "phrases": "wide road 宽阔的道路；wide use 广泛使用",
+    "example_sentence": "The new highway is very wide.",
+    "example_translation": "这条新公路非常宽。",
+    "usage_notes": "形容词，可表宽度/范围。"
+  },
+  {
+    "word": "port",
+    "phonetic": "/pɔːt/",
+    "meaning": "n. 港口",
+    "phrases": "sea port 海港",
+    "example_sentence": "Ships come and go at the port every day.",
+    "example_translation": "港口每天船只往来。",
+    "usage_notes": "可数名词。"
+  }
+]
