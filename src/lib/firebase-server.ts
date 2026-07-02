@@ -1,5 +1,5 @@
-import { initializeApp, getApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import fs from "fs";
 import path from "path";
 
@@ -9,33 +9,54 @@ export function getDb() {
   if (db) return db;
 
   try {
-    const configPath = path.join(process.cwd(), "firebase-applet-config.json");
-    if (!fs.existsSync(configPath)) {
-      console.warn("firebase-applet-config.json not found! Falling back to local/memory mode.");
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+    if (!projectId || !clientEmail || !privateKey) {
+      console.warn("Missing Firebase Admin SDK environment variables. Firebase operations will fall back to local mode.");
       return null;
     }
-    const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
-    const firebaseConfig = {
-      apiKey: config.apiKey,
-      authDomain: config.authDomain,
-      projectId: config.projectId,
-      storageBucket: config.storageBucket,
-      messagingSenderId: config.messagingSenderId,
-      appId: config.appId
-    };
 
-    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-    
-    // Check if firestoreDatabaseId is defined to use specific database
-    if (config.firestoreDatabaseId) {
-      db = getFirestore(app, config.firestoreDatabaseId);
+    let app;
+    if (getApps().length === 0) {
+      app = initializeApp({
+        credential: cert({
+          projectId: projectId,
+          clientEmail: clientEmail,
+          privateKey: privateKey.replace(/\\n/g, '\n')
+        })
+      });
     } else {
+      app = getApp();
+    }
+
+    // Try to read databaseId from environment or firebase-applet-config.json
+    let databaseId = process.env.FIREBASE_DATABASE_ID;
+    if (!databaseId) {
+      try {
+        const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+        if (fs.existsSync(configPath)) {
+          const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+          databaseId = config.firestoreDatabaseId;
+        }
+      } catch (err) {
+        console.warn("Could not read databaseId from firebase-applet-config.json:", err);
+      }
+    }
+
+    if (databaseId) {
+      console.log(`Initializing Firestore with custom databaseId: ${databaseId}`);
+      db = getFirestore(app, databaseId);
+    } else {
+      console.log("Initializing Firestore with default databaseId");
       db = getFirestore(app);
     }
-    console.log("Firebase initialized successfully with database id:", config.firestoreDatabaseId || "(default)");
+
+    console.log("Firebase Admin SDK initialized successfully.");
     return db;
   } catch (error) {
-    console.error("Failed to initialize Firebase:", error);
+    console.error("Failed to initialize Firebase Admin SDK:", error);
     return null;
   }
 }

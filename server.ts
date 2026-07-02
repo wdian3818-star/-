@@ -6,7 +6,7 @@ import { wordQuestions, sentenceQuestions, phraseQuestions } from "./src/data/qu
 import { GoogleGenAI } from "@google/genai";
 import { LeaderboardEntry } from "./src/types";
 import { getDb } from "./src/lib/firebase-server";
-import { collection, getDocs, setDoc, doc, deleteDoc, query, where } from "firebase/firestore";
+
 
 const BACKUP_FILE = path.join(process.cwd(), "user_mistakes_backup.json");
 
@@ -154,12 +154,11 @@ async function seedDatabase() {
   }
 
   try {
-    const qCol = collection(db, "questions");
-    const snapshot = await getDocs(qCol);
+    const snapshot = await db.collection("questions").get();
     
     const totalLocalQuestions = wordQuestions.length + phraseQuestions.length + sentenceQuestions.length;
     let needsReseed = false;
-    snapshot.forEach((doc) => {
+    snapshot.forEach((doc: any) => {
       if (doc.id === "w1" || doc.id === "p1" || doc.id === "s1") {
         needsReseed = true;
       }
@@ -172,7 +171,7 @@ async function seedDatabase() {
     if (needsReseed) {
       console.log(`Detected question count mismatch (Firestore: ${snapshot.size}, Local: ${totalLocalQuestions}) or placeholders. Clearing old database records for Unit 1...`);
       for (const d of snapshot.docs) {
-        await deleteDoc(d.ref);
+        await d.ref.delete();
       }
       console.log("Database cleared successfully. Proceeding to seed Unit 1 questions...");
     } else if (snapshot.size > 0) {
@@ -183,13 +182,13 @@ async function seedDatabase() {
     console.log("Seeding database with extracted Unit 1 questions...");
     
     for (const q of wordQuestions) {
-      await setDoc(doc(db, "questions", q.id), { ...q, category: "word" });
+      await db.collection("questions").doc(q.id).set({ ...q, category: "word" });
     }
     for (const q of phraseQuestions) {
-      await setDoc(doc(db, "questions", q.id), { ...q, category: "phrase" });
+      await db.collection("questions").doc(q.id).set({ ...q, category: "phrase" });
     }
     for (const q of sentenceQuestions) {
-      await setDoc(doc(db, "questions", q.id), { ...q, category: "sentence" });
+      await db.collection("questions").doc(q.id).set({ ...q, category: "sentence" });
     }
     console.log(`Seeding complete! Successfully added ${totalLocalQuestions} Unit 1 questions to Firestore.`);
   } catch (error) {
@@ -226,18 +225,16 @@ app.get("/api/questions", async (req, res) => {
     }
 
     try {
-      const qCol = collection(db, "questions");
-      const qQuery = query(qCol, where("category", "==", type));
-      const snapshot = await getDocs(qQuery);
+      const snapshot = await db.collection("questions").where("category", "==", type).get();
       let questions: any[] = [];
-      snapshot.forEach((doc) => {
+      snapshot.forEach((doc: any) => {
         questions.push({ ...doc.data() });
       });
 
       if (questions.length === 0) {
         await seedDatabase();
-        const retrySnapshot = await getDocs(qQuery);
-        retrySnapshot.forEach((doc) => {
+        const retrySnapshot = await db.collection("questions").where("category", "==", type).get();
+        retrySnapshot.forEach((doc: any) => {
           questions.push({ ...doc.data() });
         });
       }
@@ -294,14 +291,11 @@ app.get("/api/mistakes", async (req, res) => {
 
     if (db) {
       try {
-        const mistakesCol = collection(db, "user_mistakes");
-        const q = query(
-          mistakesCol,
-          where("username", "==", String(username).trim()),
-          where("quizType", "==", String(type))
-        );
-        const snapshot = await getDocs(q);
-        snapshot.forEach((doc) => {
+        const snapshot = await db.collection("user_mistakes")
+          .where("username", "==", String(username).trim())
+          .where("quizType", "==", String(type))
+          .get();
+        snapshot.forEach((doc: any) => {
           mistakes.push(doc.data().question);
         });
         querySuccess = true;
@@ -340,7 +334,7 @@ app.post("/api/mistakes/add", async (req, res) => {
       try {
         for (const question of questions) {
           const docId = `${String(username).trim()}_${String(quizType)}_${question.id}`;
-          await setDoc(doc(db, "user_mistakes", docId), {
+          await db.collection("user_mistakes").doc(docId).set({
             username: String(username).trim(),
             quizType: String(quizType),
             questionId: question.id,
@@ -378,7 +372,7 @@ app.post("/api/mistakes/remove", async (req, res) => {
       try {
         for (const qId of questionIds) {
           const docId = `${String(username).trim()}_${String(quizType)}_${qId}`;
-          await deleteDoc(doc(db, "user_mistakes", docId));
+          await db.collection("user_mistakes").doc(docId).delete();
         }
       } catch (dbError: any) {
         console.warn("Firestore deleteDoc for user_mistakes failed. Error:", dbError.message);
@@ -407,13 +401,10 @@ app.get("/api/wrong-book", async (req, res) => {
 
     if (db) {
       try {
-        const mistakesCol = collection(db, "user_mistakes");
-        const q = query(
-          mistakesCol,
-          where("username", "==", String(username).trim())
-        );
-        const snapshot = await getDocs(q);
-        snapshot.forEach((doc) => {
+        const snapshot = await db.collection("user_mistakes")
+          .where("username", "==", String(username).trim())
+          .get();
+        snapshot.forEach((doc: any) => {
           const data = doc.data();
           const qType = data.quizType;
           if (qType === 'word') {
@@ -523,7 +514,7 @@ app.post("/api/submit", async (req, res) => {
         // Save incorrects to user_mistakes
         for (const question of incorrects) {
           const docId = `${activeUser}_${String(quizType)}_${question.id}`;
-          await setDoc(doc(db, "user_mistakes", docId), {
+          await db.collection("user_mistakes").doc(docId).set({
             username: activeUser,
             quizType: String(quizType),
             questionId: question.id,
@@ -535,7 +526,7 @@ app.post("/api/submit", async (req, res) => {
         // Remove correct answers from user_mistakes
         for (const question of corrects) {
           const docId = `${activeUser}_${String(quizType)}_${question.id}`;
-          await deleteDoc(doc(db, "user_mistakes", docId));
+          await db.collection("user_mistakes").doc(docId).delete();
         }
       } catch (dbError: any) {
         console.warn("Firestore setDoc/deleteDoc in /api/submit failed. Error:", dbError.message);
